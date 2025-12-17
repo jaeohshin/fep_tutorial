@@ -1,0 +1,28 @@
+# This file was created Wed Dec 17 17:21:32 2025
+# Created by:
+#                 :-) GROMACS - gmx bar, 2024.5-conda_forge (-:
+# 
+# Executable:   /home/jaeohshin/miniconda3/envs/gro/bin.AVX2_256/gmx
+# Data prefix:  /home/jaeohshin/miniconda3/envs/gro
+# Working dir:  /home/jaeohshin/fep_tutorial/tyk2/system/lambda
+# Command line:
+#   gmx bar -f fep_0.xvg fep_1.xvg fep_10.xvg fep_2.xvg fep_3.xvg fep_4.xvg fep_5.xvg fep_6.xvg fep_7.xvg fep_8.xvg fep_9.xvg -o bar.xvg -oi barint.xvg
+# gmx bar is part of G R O M A C S:
+#
+# GRoups of Organic Molecules in ACtion for Science
+#
+@    title "Free energy integral"
+@    xaxis  label "\xl\f{}"
+@    yaxis  label "\xD\f{}G (kT)"
+@TYPE xy
+     0  0.00
+     1  0.40
+     2 -10.29
+     3 -21.19
+     4 -27.99
+     5 -30.12
+     6 -27.51
+     7 -20.32
+     8 -9.85
+     9  0.09
+    10 -2.40
