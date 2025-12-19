@@ -1,342 +1,252 @@
-# Free Energy Perturbation (FEP) Tutorial
+# Free Energy Perturbation (FEP) Tutorials
 
-Relative Binding Free Energy (RBFE) calculation for Tyk2 kinase inhibitors using GROMACS and pmx.
+Comprehensive tutorials for calculating relative protein-ligand binding free energies using different FEP approaches.
 
-## Overview
+## Repository Overview
 
-This tutorial demonstrates how to calculate the relative binding free energy difference (ΔΔG) between two ligands binding to Tyk2 kinase using the Free Energy Perturbation (FEP) method.
+This repository contains tutorials for two main FEP methodologies:
 
-**Target**: Tyk2 (Tyrosine kinase 2)  
-**Ligands**: 0X5 (PDB: 4GIH) → 0X6 (PDB: 4GII)  
-**Result**: ΔΔG = -5.99 ± 1.39 kJ/mol (-1.43 ± 0.33 kcal/mol)
+### 1. Equilibrium Methods ([`equilibrium_methods/`](equilibrium_methods/))
+Traditional FEP using multiple lambda windows with MBAR/BAR analysis.
 
-## Background
+- **Tyk2 Tutorial** - Tyrosine kinase 2 inhibitors
+  - Method: Lambda windows (0.0, 0.05, 0.1, ..., 1.0)
+  - Analysis: MBAR (Multistate Bennett Acceptance Ratio)
+  - Time: ~12 hours per edge
+  - Location: `equilibrium_methods/tyk2/`
 
-### What is FEP?
+### 2. Nonequilibrium Methods ([`nonequilibrium_methods/`](nonequilibrium_methods/))
+Fast-switching FEP using Crooks Fluctuation Theorem.
 
-FEP calculates the free energy difference between two states by gradually "morphing" one ligand into another during molecular dynamics simulation. Instead of calculating absolute binding energies (which is computationally expensive), we calculate the **relative** difference using a thermodynamic cycle:
+- **CDK8 Tutorial** - Cyclin-Dependent Kinase 8 inhibitors
+  - Method: Nonequilibrium switching (pmx)
+  - Analysis: Crooks theorem with maximum likelihood
+  - Time: ~6 hours per edge
+  - Location: `nonequilibrium_methods/cdk8_pmx/`
+  - **Complete tutorial documentation** in `tutorial/` directory
 
+---
+
+## Quick Start
+
+### Equilibrium Method (Tyk2)
+```bash
+cd equilibrium_methods/tyk2
+# Follow instructions in that directory
 ```
-ΔΔG_bind = ΔG_protein - ΔG_water
+
+### Nonequilibrium Method (CDK8)
+```bash
+cd nonequilibrium_methods/cdk8_pmx/tutorial
+# Read through:
+# - README.md (overview)
+# - 01_setup/README.md
+# - 02_complex_leg/README.md
+# - 03_water_leg/README.md
+# - 04_analysis/README.md
 ```
 
-Where:
-- ΔG_protein: Free energy change of A→B transformation in protein
-- ΔG_water: Free energy change of A→B transformation in water
+---
 
-### Lambda (λ) Windows
+## Method Comparison
 
-The transformation is performed gradually using λ parameter:
-- λ = 0: Ligand A (0X5)
-- λ = 1: Ligand B (0X6)
+| Feature | Equilibrium | Nonequilibrium |
+|---------|-------------|----------------|
+| **Lambda windows** | Many (10-20) | Only end states (2) |
+| **Equilibration** | Short per window | Long at end states |
+| **Transitions** | N/A | Many short switches |
+| **Analysis** | MBAR/BAR | Crooks theorem |
+| **Parallelization** | Moderate | Excellent |
+| **Time per edge** | ~12 hours | ~6 hours |
+| **Accuracy** | High | High |
+| **Best for** | Careful studies | High-throughput |
 
-We simulate at multiple λ values (0.0, 0.1, 0.2, ... 1.0) and integrate the energy changes.
+---
+
+## Results Summary
+
+### Tyk2 (Equilibrium Method)
+- Transformation: 0X5 → 0X6
+- Result: ΔΔG = -5.99 ± 1.39 kJ/mol
+- Experimental: Unknown
+- Method: Traditional lambda windows + MBAR
+
+### CDK8 (Nonequilibrium Method)
+- Transformation: Ligand 16 → Ligand 14
+- Result: ΔΔG = +2.85 ± 1.27 kJ/mol
+- Experimental: +3.97 kJ/mol
+- Error: 1.12 kJ/mol (0.27 kcal/mol) ✓
+- Method: pmx nonequilibrium switching
+
+---
 
 ## Requirements
 
 ### Software
-- GROMACS 2024+ (with CUDA for GPU acceleration)
-- pmx (for hybrid topology generation)
-- acpype (for ligand parameterization)
-- Open Babel (for hydrogen addition)
+- GROMACS 2024.5+ (or 2023.x)
+- Python 3.10+
+- pmx 4.1.3+ (for nonequilibrium method)
+- pymbar (for equilibrium method)
+
+### Hardware
+- GPU recommended (NVIDIA RTX series)
+- 16+ CPU cores
+- 32+ GB RAM
+- ~50 GB disk space per edge
 
 ### Installation
-
 ```bash
 # Create conda environment
-conda create -n fep python=3.10 -y
+conda create -n fep python=3.10
 conda activate fep
 
-# Install packages
-pip install pmx-biobb
-pip install scipy==1.12.0  # Required for pmx compatibility
-conda install -c conda-forge acpype openbabel gromacs -y
+# Install GROMACS
+conda install -c conda-forge gromacs=2024.5
+
+# For equilibrium method
+pip install pymbar alchemlyb
+
+# For nonequilibrium method
+pip install pmx_biophysics
 ```
 
-## Workflow
+---
 
-### Step 1: Structure Preparation
-
-Download and prepare protein and ligand structures from PDB:
-
-```bash
-mkdir -p structures && cd structures
-
-# Download Tyk2 structures
-wget https://files.rcsb.org/download/4GIH.pdb  # Ligand 0X5
-wget https://files.rcsb.org/download/4GII.pdb  # Ligand 0X6
-
-# Extract protein and ligands
-grep "^ATOM" 4GIH.pdb > protein_tyk2.pdb
-grep "0X5" 4GIH.pdb > ligand_0X5.pdb
-grep "0X6" 4GII.pdb > ligand_0X6.pdb
-
-# Add hydrogens (required for parameterization)
-obabel ligand_0X5.pdb -O ligand_0X5_h.pdb -h
-obabel ligand_0X6.pdb -O ligand_0X6_h.pdb -h
+## Repository Structure
+```
+fep_tutorial/
+├── README.md (this file)
+├── equilibrium_methods/
+│   ├── tyk2/                    # Tyk2 kinase tutorial
+│   └── t4_lysozyme/             # T4 lysozyme tutorial (if added)
+├── nonequilibrium_methods/
+│   └── cdk8_pmx/
+│       ├── tutorial/            # Complete tutorial documentation
+│       │   ├── README.md
+│       │   ├── 01_setup/
+│       │   ├── 02_complex_leg/
+│       │   ├── 03_water_leg/
+│       │   └── 04_analysis/
+│       ├── edge_16_14/          # Hybrid topologies
+│       ├── prot.pdb             # CDK8 structure
+│       └── [calculation files]
+├── structures/                   # Shared structure files
+└── rel_ddG_MerckDataSet_JCIM/   # Merck dataset (git submodule)
 ```
 
-### Step 2: Ligand Parameterization
+---
 
-Generate force field parameters for ligands using GAFF:
+## Tutorials
 
-```bash
-# Generate topology files with AM1-BCC charges
-acpype -i ligand_0X5_h.pdb -c bcc -n 0
-acpype -i ligand_0X6_h.pdb -c bcc -n 0
+### Nonequilibrium Method Tutorial (Recommended for beginners)
+
+The **CDK8 pmx tutorial** is complete with step-by-step documentation:
+
+1. **[Setup](nonequilibrium_methods/cdk8_pmx/tutorial/01_setup/README.md)**
+   - Environment preparation
+   - Clone Merck dataset
+   - Understand hybrid topologies
+
+2. **[Complex Leg](nonequilibrium_methods/cdk8_pmx/tutorial/02_complex_leg/README.md)**
+   - Protein-ligand complex assembly
+   - Equilibration (6 ns)
+   - 160 nonequilibrium transitions
+   - Calculate ΔΔG_complex
+
+3. **[Water Leg](nonequilibrium_methods/cdk8_pmx/tutorial/03_water_leg/README.md)**
+   - Ligand in water setup
+   - Equilibration (6 ns)
+   - 160 nonequilibrium transitions
+   - Calculate ΔΔG_water
+
+4. **[Analysis](nonequilibrium_methods/cdk8_pmx/tutorial/04_analysis/README.md)**
+   - Calculate ΔΔG_binding
+   - Compare to experiment
+   - Interpret results
+
+**Time:** ~6 hours total for one edge
+
+### Equilibrium Method Tutorial
+
+Located in `equilibrium_methods/tyk2/` - traditional approach with lambda windows.
+
+---
+
+## Theory Background
+
+### Thermodynamic Cycle
+
+Both methods use the same underlying thermodynamic cycle:
+```
+Ligand A (water) ----ΔG_bind(A)----> Ligand A (protein)
+      |                                      |
+      | ΔΔG_water                            | ΔΔG_complex
+      |                                      |
+      v                                      v
+Ligand B (water) ----ΔG_bind(B)----> Ligand B (protein)
 ```
 
-**Output**: `ligand_*_GMX.gro` (coordinates) and `ligand_*_GMX.itp` (topology)
-
-### Step 3: Hybrid Topology Generation
-
-Create hybrid topology that can morph between ligand A and B:
-
-```bash
-mkdir -p hybrid && cd hybrid
-
-# Copy ligand files
-cp ../ligand_0X5_h.acpype/ligand_0X5_h_GMX.gro ligandA.gro
-cp ../ligand_0X5_h.acpype/ligand_0X5_h_GMX.itp ligandA.itp
-cp ../ligand_0X6_h.acpype/ligand_0X6_h_GMX.gro ligandB.gro
-cp ../ligand_0X6_h.acpype/ligand_0X6_h_GMX.itp ligandB.itp
-
-# Atom mapping
-pmx atomMapping -i1 ligandA.gro -i2 ligandB.gro \
-    -o1 pairs1.dat -o2 pairs2.dat \
-    -opdb1 alignedA.pdb -opdb2 alignedB.pdb
-
-# Generate hybrid topology
-pmx ligandHybrid -i1 alignedA.pdb -i2 alignedB.pdb \
-    -itp1 ligandA.itp -itp2 ligandB.itp \
-    -pairs pairs1.dat \
-    -oA hybridA.pdb -oB hybridB.pdb -oitp hybrid.itp
+**Relative binding free energy:**
+```
+ΔΔG_binding = ΔΔG_complex - ΔΔG_water
 ```
 
-**Output**: `hybrid.itp` (contains A and B state parameters), `ffmerged.itp` (dummy atom types)
+### Key Differences
 
-### Step 4: System Setup
+**Equilibrium (MBAR):**
+- Simulates many intermediate states (λ = 0.0, 0.05, 0.1, ..., 1.0)
+- Uses overlap between neighboring states
+- MBAR optimally combines all data
 
-Build the simulation system with protein, ligand, water, and ions:
+**Nonequilibrium (Crooks):**
+- Simulates only end states (λ = 0.0 and 1.0)
+- Many rapid "switches" between states
+- Crooks Fluctuation Theorem relates work to free energy
 
-```bash
-mkdir -p system && cd system
-
-# Copy necessary files
-cp ../protein_tyk2.pdb .
-cp ../hybrid/hybridA.pdb .
-cp ../hybrid/hybrid.itp .
-cp ../hybrid/ffmerged.itp .
-
-# Generate protein topology
-gmx pdb2gmx -f protein_tyk2.pdb -o protein.gro -p topol.top \
-    -ff amber99sb-ildn -water tip3p -ignh
-
-# Combine protein and ligand coordinates
-# (manual step - see detailed instructions)
-
-# Create atomtypes.itp from ligand topologies
-# (extract GAFF atom types from acpype output)
-
-# Edit topol.top to include:
-# - ffmerged.itp
-# - atomtypes.itp  
-# - hybrid.itp
-
-# Add simulation box
-gmx editconf -f complex.gro -o boxed.gro -c -d 1.2 -bt cubic
-
-# Add water
-gmx solvate -cp boxed.gro -cs spc216.gro -o solvated.gro -p topol.top
-
-# Add ions (neutralize + 0.15M concentration)
-gmx grompp -f ions.mdp -c solvated.gro -p topol.top -o ions.tpr -maxwarn 5
-gmx genion -s ions.tpr -o ionized.gro -p topol.top -pname NA -nname CL -neutral -conc 0.15
-```
-
-### Step 5: Equilibration
-
-Minimize energy and equilibrate the system:
-
-```bash
-# Energy minimization
-gmx grompp -f em.mdp -c ionized.gro -p topol.top -o em.tpr
-gmx mdrun -v -deffnm em
-
-# NVT equilibration (100 ps)
-gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr
-gmx mdrun -v -deffnm nvt
-
-# NPT equilibration (100 ps)
-gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -t nvt.cpt -p topol.top -o npt.tpr
-gmx mdrun -v -deffnm npt
-```
-
-### Step 6: FEP Production
-
-Run FEP simulations at each λ window:
-
-```bash
-mkdir -p lambda && cd lambda
-
-# Generate MDP files for each lambda (see mdp/fep_template.mdp)
-# Key parameters:
-#   free_energy = yes
-#   init_lambda_state = 0-10
-#   fep_lambdas = 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
-
-# Generate TPR files
-for i in 0 1 2 3 4 5 6 7 8 9 10; do
-    gmx grompp -f fep_$i.mdp -c ../npt.gro -t ../npt.cpt \
-        -p ../topol.top -o fep_$i.tpr -maxwarn 5
-done
-
-# Run simulations (with GPU acceleration)
-for i in 0 1 2 3 4 5 6 7 8 9 10; do
-    gmx mdrun -deffnm fep_$i -nb gpu -pme gpu
-done
-```
-
-### Step 7: Analysis
-
-Calculate ΔG using Bennett Acceptance Ratio (BAR):
-
-```bash
-gmx bar -f fep_*.xvg -o bar.xvg -oi barint.xvg
-```
-
-## Results
-
-### Final ΔG
-
-| Unit | Value |
-|------|-------|
-| kT | -2.40 ± 0.56 |
-| kJ/mol | -5.99 ± 1.39 |
-| kcal/mol | -1.43 ± 0.33 |
-
-**Interpretation**: Ligand 0X6 binds ~1.4 kcal/mol stronger to Tyk2 than ligand 0X5.
-
-### Free Energy Profile
-
-The free energy integral shows the transformation pathway:
-
-```
-λ     ΔG (kT)
-0     0.00
-1     0.40
-2    -10.29
-3    -21.19
-4    -27.99
-5    -30.12  ← minimum
-6    -27.51
-7    -20.32
-8    -9.85
-9     0.09
-10   -2.40   ← final ΔΔG
-```
-
-Note: Only the endpoint difference (λ=0 → λ=10) has physical meaning. The intermediate pathway is a mathematical construct.
-
-## MDP Parameters
-
-### FEP-specific settings
-
-```mdp
-; Free energy parameters
-free_energy = yes
-init_lambda_state = 0           ; 0-10 for each window
-fep_lambdas = 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
-calc-lambda-neighbors = -1      ; Calculate all neighbors
-
-; Softcore parameters (prevent singularities)
-sc-alpha = 0.5
-sc-power = 1
-sc-sigma = 0.3
-sc-coul = yes
-
-; Output frequency for dH/dl
-nstdhdl = 100
-```
-
-## Performance
-
-| Hardware | Time per λ window (10 ns) | Total time (11 windows) |
-|----------|---------------------------|-------------------------|
-| RTX 4090 | ~50 min | ~9 hours |
-| CPU only (16 cores) | ~4 hours | ~44 hours |
-
-## Directory Structure
-
-```
-fep-tutorial/
-├── README.md
-├── structures/
-│   ├── 4GIH.pdb
-│   ├── 4GII.pdb
-│   ├── protein_tyk2.pdb
-│   ├── ligand_0X5.pdb
-│   └── ligand_0X6.pdb
-├── ligand_param/
-│   ├── ligand_0X5_h.acpype/
-│   └── ligand_0X6_h.acpype/
-├── hybrid/
-│   ├── hybrid.itp
-│   ├── ffmerged.itp
-│   └── pairs1.dat
-├── system/
-│   ├── topol.top
-│   ├── complex.gro
-│   └── ionized.gro
-├── mdp/
-│   ├── em.mdp
-│   ├── nvt.mdp
-│   ├── npt.mdp
-│   └── fep_template.mdp
-├── lambda/
-│   ├── fep_0.xvg
-│   ├── ...
-│   └── fep_10.xvg
-└── results/
-    ├── bar.xvg
-    └── barint.xvg
-```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **pmx import error (scipy.integrate.simps)**
-   ```bash
-   pip install scipy==1.12.0
-   ```
-
-2. **Atom type not found error**
-   - Create `atomtypes.itp` from acpype output
-   - Include it in `topol.top` after `ffmerged.itp`
-
-3. **GPU not detected**
-   - Use CPU version: remove `-nb gpu -pme gpu` flags
-   - Check GROMACS was compiled with CUDA: `gmx --version | grep GPU`
+---
 
 ## References
 
-1. Bennett, C. H. (1976). Efficient estimation of free energy differences from Monte Carlo data. *Journal of Computational Physics*, 22(2), 245-268.
+### Nonequilibrium Method
+1. Gapsys, V., et al. (2022). Pre-Exascale Computing of Protein–Ligand Binding Free Energies. *J. Chem. Inf. Model.*, 62, 1172-1177.
+2. Gapsys, V., et al. (2020). Large Scale Relative Protein Ligand Binding Affinities Using Non-Equilibrium Alchemy. *Chem. Sci.*, 11, 1140-1152.
 
-2. Gapsys, V., et al. (2015). pmx: Automated protein structure and topology generation for alchemical perturbations. *Journal of Computational Chemistry*, 36(5), 348-354.
+### Equilibrium Method
+1. Shirts, M. R., & Chodera, J. D. (2008). Statistically optimal analysis of samples from multiple equilibrium states. *J. Chem. Phys.*, 129, 124105.
+2. Klimovich, P. V., et al. (2015). Guidelines for the analysis of free energy calculations. *J. Comput. Aided Mol. Des.*, 29, 397-411.
 
-3. Wang, L., et al. (2015). Accurate and reliable prediction of relative ligand binding potency in prospective drug discovery by way of a modern free-energy calculation protocol and force field. *Journal of the American Chemical Society*, 137(7), 2695-2703.
+### Datasets
+- Merck FEP dataset: https://github.com/deGrootLab/rel_ddG_MerckDataSet_JCIM
+- Tyk2 structures: Custom prepared
+
+---
+
+## Contributing
+
+Feel free to:
+- Report issues
+- Suggest improvements
+- Add new tutorials
+- Share results
+
+---
 
 ## License
 
-MIT License
+MIT License - See individual tutorial directories for specific licensing.
+
+---
 
 ## Author
 
 Jaeoh Shin  
-Korea Institute for Advanced Study (KIAS)
+Korea Institute for Advanced Study (KIAS)  
+Computational Biophysics
 
 ---
 
-*Created: December 2025*
-# fep_tutorial
+## Acknowledgments
+
+- Bert de Groot lab (pmx development)
+- Merck for the benchmark dataset
+- GROMACS development team
