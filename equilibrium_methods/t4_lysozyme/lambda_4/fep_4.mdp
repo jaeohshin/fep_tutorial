@@ -1,0 +1,60 @@
+integrator              = md
+nsteps                  = 2500000      ; 5 ns
+dt                      = 0.002
+nstlist                 = 20
+cutoff-scheme           = Verlet
+coulombtype             = PME
+rcoulomb                = 1.1
+rvdw                    = 1.1
+
+; 제약 조건
+constraints             = h-bonds
+constraint-algorithm    = lincs
+
+; 온도 제어
+tcoupl                  = V-rescale
+tc-grps                 = Protein Non-Protein
+tau-t                   = 0.1     0.1
+ref-t                   = 300     300
+
+; 압력 제어
+pcoupl                  = Parrinello-Rahman
+pcoupltype              = isotropic
+tau-p                   = 2.0
+compressibility         = 4.5e-5
+ref-p                   = 1.0
+
+; 속도 생성 안 함
+gen_vel                 = no
+continuation            = yes
+
+; 출력 제어
+nstxout-compressed      = 5000
+nstenergy               = 500
+nstlog                  = 500
+
+; ========================================
+; FEP 설정 (핵심!)
+; ========================================
+free-energy              = yes
+init-lambda-state        = 4
+delta-lambda             = 0
+calc-lambda-neighbors    = 1
+
+; λ 포인트 정의
+fep-lambdas              = 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
+
+; 어떤 molecule을 변화시킬지 지정 (핵심!)
+couple-moltype           = Protein_chain_A
+couple-lambda0           = vdw-q
+couple-lambda1           = vdw-q
+couple-intramol          = no
+
+; Soft-core 파라미터
+sc-alpha                 = 0.5
+sc-power                 = 1
+sc-sigma                 = 0.3
+
+; dH/dλ 출력 (핵심!)
+nstdhdl                  = 100
+dhdl-print-energy        = yes

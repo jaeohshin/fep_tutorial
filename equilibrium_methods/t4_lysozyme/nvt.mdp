@@ -1,0 +1,21 @@
+define                  = -DPOSRES
+integrator              = md
+nsteps                  = 50000     ; 100 ps
+dt                      = 0.002
+nstlist                 = 10
+cutoff-scheme           = Verlet
+coulombtype             = PME
+rcoulomb                = 1.0
+rvdw                    = 1.0
+tcoupl                  = V-rescale
+tc-grps                 = Protein Non-Protein
+tau-t                   = 0.1     0.1
+ref-t                   = 300     300
+gen_vel                 = yes
+gen_temp                = 300
+; FEP 전용 설정 (EM과 동일하게 유지)
+free-energy              = yes
+init-lambda              = 0
+sc-alpha                 = 0.5
+sc-power                 = 1
+sc-sigma                 = 0.5

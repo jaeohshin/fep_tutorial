@@ -1,0 +1,283 @@
+Remarks ligand_0X5_h_CNS.top created by acpype (v: 2023.10.27) on Tue Dec 16 17:09:42 2025
+
+set echo=false end
+
+autogenerate angles=True dihedrals=True end
+
+{ atomType  mass }
+MASS ca_     12.010
+MASS c_      12.010
+MASS cl_     35.450
+MASS o_      16.000
+MASS ns_     14.010
+MASS nb_     14.010
+MASS cx_     12.010
+MASS ha_      1.008
+MASS h4_      1.008
+MASS hn_      1.008
+MASS hc_      1.008
+
+RESIdue 0X5
+
+GROUP
+
+{ atomName  atomType  Charge }
+ATOM C4    TYPE= ca_   CHARGE=  -0.1436 END
+ATOM C5    TYPE= ca_   CHARGE=   0.0519 END
+ATOM C6    TYPE= ca_   CHARGE=  -0.1290 END
+ATOM C11   TYPE= ca_   CHARGE=   0.1266 END
+ATOM C8    TYPE= c_    CHARGE=   0.6917 END
+ATOM C12   TYPE= ca_   CHARGE=  -0.3033 END
+ATOM C13   TYPE= ca_   CHARGE=   0.4442 END
+ATOM C3    TYPE= ca_   CHARGE=   0.0519 END
+ATOM C1    TYPE= ca_   CHARGE=  -0.0960 END
+ATOM C2    TYPE= ca_   CHARGE=  -0.1290 END
+ATOM CL1   TYPE= cl_   CHARGE=  -0.0599 END
+ATOM O9    TYPE= o_    CHARGE=  -0.5501 END
+ATOM N10   TYPE= ns_   CHARGE=  -0.4601 END
+ATOM N14   TYPE= nb_   CHARGE=  -0.7350 END
+ATOM C15   TYPE= ca_   CHARGE=   0.5502 END
+ATOM C16   TYPE= ca_   CHARGE=  -0.3203 END
+ATOM N17   TYPE= ns_   CHARGE=  -0.5474 END
+ATOM C18   TYPE= c_    CHARGE=   0.7001 END
+ATOM O19   TYPE= o_    CHARGE=  -0.5931 END
+ATOM C20   TYPE= cx_   CHARGE=  -0.2297 END
+ATOM C21   TYPE= cx_   CHARGE=  -0.1039 END
+ATOM C22   TYPE= cx_   CHARGE=  -0.1039 END
+ATOM CL2   TYPE= cl_   CHARGE=  -0.0599 END
+ATOM H     TYPE= ha_   CHARGE=   0.1570 END
+ATOM H1    TYPE= ha_   CHARGE=   0.1830 END
+ATOM H2    TYPE= h4_   CHARGE=   0.0251 END
+ATOM H3    TYPE= ha_   CHARGE=   0.1480 END
+ATOM H4    TYPE= ha_   CHARGE=   0.1570 END
+ATOM H5    TYPE= hn_   CHARGE=   0.3305 END
+ATOM H6    TYPE= ha_   CHARGE=   0.1780 END
+ATOM H7    TYPE= hn_   CHARGE=   0.3335 END
+ATOM H8    TYPE= hc_   CHARGE=   0.0987 END
+ATOM H9    TYPE= hc_   CHARGE=   0.0842 END
+ATOM H10   TYPE= hc_   CHARGE=   0.0842 END
+ATOM H11   TYPE= hc_   CHARGE=   0.0842 END
+ATOM H12   TYPE= hc_   CHARGE=   0.0842 END
+
+{ Bonds: atomName1  atomName2 }
+BOND C6    H    
+BOND C12   H1   
+BOND C13   H2   
+BOND C1    H3   
+BOND C2    H4   
+BOND N10   H5   
+BOND C16   H6   
+BOND N17   H7   
+BOND C20   H8   
+BOND C21   H9   
+BOND C21   H10  
+BOND C22   H11  
+BOND C22   H12  
+BOND C4    C3   
+BOND C4    C5   
+BOND C4    C8   
+BOND C5    C6   
+BOND C5    CL1  
+BOND C6    C1   
+BOND C11   C16  
+BOND C11   N10  
+BOND C11   C12  
+BOND C8    N10  
+BOND C8    O9   
+BOND C12   C13  
+BOND C13   N14  
+BOND C3    C2   
+BOND C3    CL2  
+BOND C1    C2   
+BOND N14   C15  
+BOND C15   N17  
+BOND C15   C16  
+BOND N17   C18  
+BOND C18   C20  
+BOND C18   O19  
+BOND C20   C21  
+BOND C20   C22  
+BOND C21   C22  
+
+{ Angles: atomName1 atomName2 atomName3}
+ANGLe C5    C6    H    
+ANGLe C6    C1    H3   
+ANGLe C11   C16   H6   
+ANGLe C11   N10   H5   
+ANGLe C11   C12   H1   
+ANGLe C8    N10   H5   
+ANGLe C12   C13   H2   
+ANGLe C13   C12   H1   
+ANGLe C3    C2    H4   
+ANGLe C1    C6    H    
+ANGLe C1    C2    H4   
+ANGLe C2    C1    H3   
+ANGLe N14   C13   H2   
+ANGLe C15   N17   H7   
+ANGLe C15   C16   H6   
+ANGLe C18   N17   H7   
+ANGLe C18   C20   H8   
+ANGLe C20   C21   H9   
+ANGLe C20   C21   H10  
+ANGLe C20   C22   H11  
+ANGLe C20   C22   H12  
+ANGLe C21   C20   H8   
+ANGLe C21   C22   H11  
+ANGLe C21   C22   H12  
+ANGLe C22   C20   H8   
+ANGLe C22   C21   H9   
+ANGLe C22   C21   H10  
+ANGLe H9    C21   H10  
+ANGLe H11   C22   H12  
+ANGLe C4    C3    C2   
+ANGLe C4    C3    CL2  
+ANGLe C4    C5    C6   
+ANGLe C4    C5    CL1  
+ANGLe C4    C8    N10  
+ANGLe C4    C8    O9   
+ANGLe C5    C4    C3   
+ANGLe C5    C4    C8   
+ANGLe C5    C6    C1   
+ANGLe C6    C5    CL1  
+ANGLe C6    C1    C2   
+ANGLe C11   C16   C15  
+ANGLe C11   N10   C8   
+ANGLe C11   C12   C13  
+ANGLe C8    C4    C3   
+ANGLe C12   C11   C16  
+ANGLe C12   C11   N10  
+ANGLe C12   C13   N14  
+ANGLe C13   N14   C15  
+ANGLe C3    C2    C1   
+ANGLe C2    C3    CL2  
+ANGLe O9    C8    N10  
+ANGLe N10   C11   C16  
+ANGLe N14   C15   N17  
+ANGLe N14   C15   C16  
+ANGLe C15   N17   C18  
+ANGLe C16   C15   N17  
+ANGLe N17   C18   C20  
+ANGLe N17   C18   O19  
+ANGLe C18   C20   C21  
+ANGLe C18   C20   C22  
+ANGLe O19   C18   C20  
+ANGLe C20   C21   C22  
+ANGLe C20   C22   C21  
+ANGLe C21   C20   C22  
+
+{ Proper Dihedrals: name1 name2 name3 name4 }
+DIHEdral C4    C3    C2    H4   
+DIHEdral C4    C5    C6    H    
+DIHEdral C4    C8    N10   H5   
+DIHEdral C5    C6    C1    H3   
+DIHEdral C6    C1    C2    H4   
+DIHEdral C11   C12   C13   H2   
+DIHEdral C12   C11   C16   H6   
+DIHEdral C12   C11   N10   H5   
+DIHEdral C3    C2    C1    H3   
+DIHEdral C2    C1    C6    H    
+DIHEdral CL1   C5    C6    H    
+DIHEdral O9    C8    N10   H5   
+DIHEdral N10   C11   C16   H6   
+DIHEdral N10   C11   C12   H1   
+DIHEdral N14   C13   C12   H1   
+DIHEdral N14   C15   N17   H7   
+DIHEdral N14   C15   C16   H6   
+DIHEdral C15   N14   C13   H2   
+DIHEdral C16   C11   N10   H5   
+DIHEdral C16   C11   C12   H1   
+DIHEdral C16   C15   N17   H7   
+DIHEdral N17   C15   C16   H6   
+DIHEdral N17   C18   C20   H8   
+DIHEdral C18   C20   C21   H9   
+DIHEdral C18   C20   C21   H10  
+DIHEdral C18   C20   C22   H11  
+DIHEdral C18   C20   C22   H12  
+DIHEdral O19   C18   N17   H7   
+DIHEdral O19   C18   C20   H8   
+DIHEdral C20   C18   N17   H7   
+DIHEdral C20   C21   C22   H11  
+DIHEdral C20   C21   C22   H12  
+DIHEdral C20   C22   C21   H9   
+DIHEdral C20   C22   C21   H10  
+DIHEdral C21   C20   C22   H11  
+DIHEdral C21   C20   C22   H12  
+DIHEdral C21   C22   C20   H8   
+DIHEdral C22   C20   C21   H9   
+DIHEdral C22   C20   C21   H10  
+DIHEdral C22   C21   C20   H8   
+DIHEdral CL2   C3    C2    H4   
+DIHEdral H     C6    C1    H3   
+DIHEdral H1    C12   C13   H2   
+DIHEdral H3    C1    C2    H4   
+DIHEdral H8    C20   C21   H9   
+DIHEdral H8    C20   C21   H10  
+DIHEdral H8    C20   C22   H11  
+DIHEdral H8    C20   C22   H12  
+DIHEdral H9    C21   C22   H11  
+DIHEdral H9    C21   C22   H12  
+DIHEdral H10   C21   C22   H11  
+DIHEdral H10   C21   C22   H12  
+DIHEdral C4    C3    C2    C1   
+DIHEdral C4    C5    C6    C1   
+DIHEdral C4    C8    N10   C11  
+DIHEdral C5    C4    C3    C2   
+DIHEdral C5    C4    C3    CL2  
+DIHEdral C5    C4    C8    N10  
+DIHEdral C5    C4    C8    O9   
+DIHEdral C5    C6    C1    C2   
+DIHEdral C3    C4    C5    C6   
+DIHEdral C8    C4    C5    C6   
+DIHEdral C6    C1    C2    C3   
+DIHEdral C11   C16   C15   N14  
+DIHEdral C11   C16   C15   N17  
+DIHEdral C11   N10   C8    O9   
+DIHEdral C11   C12   C13   N14  
+DIHEdral C8    C4    C3    C2   
+DIHEdral C8    C4    C3    CL2  
+DIHEdral C8    C4    C5    CL1  
+DIHEdral C8    N10   C11   C16  
+DIHEdral C8    N10   C11   C12  
+DIHEdral C12   C11   C16   C15  
+DIHEdral C12   C13   N14   C15  
+DIHEdral C13   C12   C11   C16  
+DIHEdral C13   C12   C11   N10  
+DIHEdral C13   N14   C15   N17  
+DIHEdral C13   N14   C15   C16  
+DIHEdral C3    C4    C5    CL1  
+DIHEdral C3    C4    C8    N10  
+DIHEdral C3    C4    C8    O9   
+DIHEdral C1    C6    C5    CL1  
+DIHEdral C1    C2    C3    CL2  
+DIHEdral N10   C11   C16   C15  
+DIHEdral N14   C15   N17   C18  
+DIHEdral C15   N17   C18   C20  
+DIHEdral C15   N17   C18   O19  
+DIHEdral C16   C15   N17   C18  
+DIHEdral N17   C18   C20   C21  
+DIHEdral N17   C18   C20   C22  
+DIHEdral C18   C20   C21   C22  
+DIHEdral C18   C20   C22   C21  
+DIHEdral O19   C18   C20   C21  
+DIHEdral O19   C18   C20   C22  
+
+{ Improper Dihedrals: aName1 aName2 aName3 aName4 }
+IMPRoper C5    C1    C6    H    
+IMPRoper C11   C13   C12   H1   
+IMPRoper C12   H2    C13   N14  
+IMPRoper C6    C2    C1    H3   
+IMPRoper C3    C1    C2    H4   
+IMPRoper C8    C11   N10   H5   
+IMPRoper C11   C15   C16   H6   
+IMPRoper C18   C15   N17   H7   
+IMPRoper C3    C4    C5    C8   
+IMPRoper C4    C6    C5    CL1  
+IMPRoper C12   C16   C11   N10  
+IMPRoper C4    N10   C8    O9   
+IMPRoper C4    C2    C3    CL2  
+IMPRoper C16   N14   C15   N17  
+IMPRoper C20   N17   C18   O19  
+
+END {RESIdue 0X5}
+
+set echo=true end

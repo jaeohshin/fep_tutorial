@@ -1,8 +1,42 @@
+# GROMACS output files
+*.xtc
 *.trr
 *.edr
+*.cpt
 *.tpr
 *.gro
-*.cpt
 *.log
-*.pdb
-#*
+*.xvg
+*.dat
+*.png
+
+# Backup files
+*~
+\#*\#
+*.bak
+.#*
+
+# Large trajectory/checkpoint files
+eq_*.xtc
+eq_*.trr
+nvt_*.xtc
+transitions/*/trans*.xtc
+transitions/*/trans*.trr
+transitions_water/*/trans*.xtc
+
+# Results that can be regenerated
+wplot.png
+ddG_*.txt
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Keep only essential input files
+# Keep: *.mdp, *.itp, *.top, *.pdb, README.md

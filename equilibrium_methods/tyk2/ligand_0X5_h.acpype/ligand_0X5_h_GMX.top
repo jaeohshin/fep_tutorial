@@ -1,0 +1,20 @@
+; ligand_0X5_h_GMX.top created by acpype (v: 2023.10.27) on Tue Dec 16 17:09:42 2025
+
+[ defaults ]
+; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ
+1               2               yes             0.5     0.8333333333
+
+; Include ligand_0X5_h_GMX.itp topology
+#include "ligand_0X5_h_GMX.itp"
+
+; Ligand position restraints
+#ifdef POSRES_LIG
+#include "posre_ligand_0X5_h.itp"
+#endif
+
+[ system ]
+ ligand_0X5_h
+
+[ molecules ]
+; Compound        nmols
+ ligand_0X5_h     1     
